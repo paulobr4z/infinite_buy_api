@@ -9,6 +9,10 @@ class ProductService {
   async findAll() {
     return await ProductModel.find()
   }
+
+  async findById(id: string) {
+    return await ProductModel.findById(id)
+  }
 }
 
 export { ProductService }
