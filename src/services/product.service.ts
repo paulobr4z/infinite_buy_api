@@ -13,6 +13,12 @@ class ProductService {
   async findById(id: string) {
     return await ProductModel.findById(id)
   }
+
+  async update(id: string, productUpdated: IProduct) {
+    return await ProductModel.findByIdAndUpdate(id, productUpdated, {
+      new: true,
+    })
+  }
 }
 
 export { ProductService }

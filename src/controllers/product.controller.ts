@@ -59,6 +59,34 @@ class ProductController {
       })
     }
   }
+
+  async update(request: Request, response: Response) {
+    try {
+      const { id } = request.params
+      const productUpdated = request.body
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(404).send({
+          error: 'invalid id',
+        })
+      }
+
+      const product = await productService.update(id, productUpdated)
+
+      if (!product) {
+        return response.status(404).send({
+          error: 'product not found',
+        })
+      }
+
+      return response.json(product)
+    } catch (error) {
+      return response.status(500).send({
+        error: 'Internal Server Error!',
+        message: error,
+      })
+    }
+  }
 }
 
 export { ProductController }
