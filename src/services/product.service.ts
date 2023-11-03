@@ -19,6 +19,10 @@ class ProductService {
       new: true,
     })
   }
+
+  async delete(id: string) {
+    return await ProductModel.findByIdAndDelete(id)
+  }
 }
 
 export { ProductService }

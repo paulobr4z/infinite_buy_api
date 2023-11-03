@@ -87,6 +87,35 @@ class ProductController {
       })
     }
   }
+
+  async delete(request: Request, response: Response) {
+    try {
+      const { id } = request.params
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(404).send({
+          error: 'invalid id',
+        })
+      }
+
+      const product = await productService.delete(id)
+
+      if (!product) {
+        return response.status(404).send({
+          error: 'product not found',
+        })
+      }
+
+      return response.status(202).json({
+        message: 'product deleted successfully',
+      })
+    } catch (error) {
+      return response.status(500).send({
+        error: 'Internal Server Error!',
+        message: error,
+      })
+    }
+  }
 }
 
 export { ProductController }
