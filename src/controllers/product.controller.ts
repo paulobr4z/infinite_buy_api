@@ -26,7 +26,7 @@ class ProductController {
         })
       }
 
-      // await productService.create(productInfo)
+      await productService.create(productInfo)
 
       return response.status(201).json()
     } catch (error) {
