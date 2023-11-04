@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { ProductService } from '../services/product.service'
 import mongoose from 'mongoose'
+import { ProductDataSchema } from '../validations/product.validation'
+import * as Yup from 'yup'
 
 const productService = new ProductService()
 
@@ -9,7 +11,22 @@ class ProductController {
     try {
       const productInfo = request.body
 
-      await productService.create(productInfo)
+      try {
+        await ProductDataSchema.validate(productInfo, { abortEarly: false })
+      } catch (error) {
+        const yupError = error as Yup.ValidationError
+        const allErrors = {}
+
+        yupError.inner.forEach((error) => {
+          allErrors[error.path] = error.message
+        })
+
+        return response.status(404).send({
+          error: allErrors,
+        })
+      }
+
+      // await productService.create(productInfo)
 
       return response.status(201).json()
     } catch (error) {
