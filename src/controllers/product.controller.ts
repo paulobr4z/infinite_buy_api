@@ -3,6 +3,7 @@ import { ProductService } from '../services/product.service'
 import mongoose from 'mongoose'
 import { ProductDataSchema } from '../validations/product.validation'
 import * as Yup from 'yup'
+import { IQuery } from '../types/product'
 
 const productService = new ProductService()
 
@@ -39,9 +40,31 @@ class ProductController {
 
   async findAll(request: Request, response: Response) {
     try {
-      const user = await productService.findAll()
+      let { page, perPage } = request.query as unknown as IQuery
 
-      return response.json(user)
+      if (!perPage) perPage = 10
+      if (!page) page = 1
+
+      const totalItems = await productService.countCharacters()
+      const totalPages = Math.ceil(totalItems / perPage)
+      const skip = Number(page) === 1 ? 0 : Number(page - 1) * perPage
+      const previousPage = Number(page) === 1 ? null : page - 1
+      const nextPage =
+        Number(page) === Number(totalPages) ? null : Number(page) + 1
+
+      const products = await productService.findAll(skip, perPage)
+
+      return response.json({
+        data: products,
+        pagination: {
+          currentPage: +page,
+          previousPage,
+          nextPage,
+          perPage: +perPage,
+          totalPages,
+          totalItems,
+        },
+      })
     } catch (error) {
       return response.status(500).send({
         error: 'Internal Server Error!',

@@ -9,3 +9,8 @@ export interface IProduct {
   category: string[]
   created_at: Date
 }
+
+export interface IQuery {
+  page: number
+  perPage: number
+}

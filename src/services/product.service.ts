@@ -6,8 +6,8 @@ class ProductService {
     return await ProductModel.create(productInfo)
   }
 
-  async findAll() {
-    return await ProductModel.find()
+  async findAll(skip: number, limit: number) {
+    return await ProductModel.find().skip(skip).limit(limit)
   }
 
   async findById(id: string) {
@@ -22,6 +22,10 @@ class ProductService {
 
   async delete(id: string) {
     return await ProductModel.findByIdAndDelete(id)
+  }
+
+  async countCharacters() {
+    return await ProductModel.countDocuments()
   }
 }
 
