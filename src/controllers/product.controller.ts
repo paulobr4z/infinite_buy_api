@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 import { ProductDataSchema } from '../validations/product.validation'
 import * as Yup from 'yup'
 import { IQuery } from '../types/product'
+import { cloudinary } from '../storage/cloudinary'
+import { v4 as uuid } from 'uuid'
 
 const productService = new ProductService()
 
@@ -149,6 +151,65 @@ class ProductController {
       return response.status(202).json({
         message: 'product deleted successfully',
       })
+    } catch (error) {
+      return response.status(500).send({
+        error: 'Internal Server Error!',
+        message: error,
+      })
+    }
+  }
+
+  async uploadImage(request: Request, response: Response) {
+    try {
+      const { id } = request.params
+      const image = request.file.buffer
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(404).send({
+          error: 'invalid id',
+        })
+      }
+
+      if (!image) {
+        return response.status(404).send({
+          error: 'no images sent',
+        })
+      }
+
+      const product = await productService.findById(id)
+
+      if (!product) {
+        return response.status(404).send({
+          error: 'product not found',
+        })
+      }
+
+      const productUpdated = { ...product._doc }
+
+      async function imagePromise() {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              { folder: 'infinite_buy', public_id: `${id}_${uuid()}` },
+              (error, result) => {
+                if (error) {
+                  console.error(error)
+                  reject(error)
+                } else {
+                  productUpdated.images = [result.secure_url]
+                  resolve(result.secure_url)
+                }
+              },
+            )
+            .end(image)
+        })
+      }
+
+      await imagePromise()
+
+      const updated = await productService.update(id, productUpdated)
+
+      return response.json(updated)
     } catch (error) {
       return response.status(500).send({
         error: 'Internal Server Error!',

@@ -8,6 +8,7 @@ export interface IProduct {
   discount: number
   category: string[]
   created_at: Date
+  _doc: IProduct
 }
 
 export interface IQuery {
