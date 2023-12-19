@@ -2,6 +2,9 @@ import { Request, Response } from 'express'
 import { UserService } from '../services/user.service'
 import { UserValidation } from '../validations/user.validation'
 import * as Yup from 'yup'
+import bcrypt from 'bcrypt'
+import { IUser } from '../types/user'
+import jwt from 'jsonwebtoken'
 
 const userService = new UserService()
 
@@ -16,43 +19,37 @@ class UserController {
     }
 
     try {
-      const emailAlreadyExists = await userService.find({
-        field: 'email',
-        value: email,
-      })
+      const user = (await userService.find(email)) as unknown as IUser
 
-      if (emailAlreadyExists) {
+      if (user.email !== email) {
         return response
-          .status(404)
-          .json({ message: 'E-mail already registered! Try again.' })
+          .status(422)
+          .json({ message: 'Incorrect email or password. Try again.' })
       }
 
-      return response.json({ message: 'login' })
-    } catch (error) {
-      console.log(error)
-      response.status(500).send(error)
-    }
+      const passwordIsValid = bcrypt.compareSync(password, user.password)
 
-    try {
-      // const user = await userService.findOne(email)
-      // if (!user) {
-      //   return response
-      //     .status(404)
-      //     .json({ message: 'Incorrect username or password. Try again.' })
-      // }
-      // const passwordIsValid = bcrypt.compareSync(password, user.password)
-      // if (!passwordIsValid) {
-      //   return response
-      //     .status(404)
-      //     .json({ message: 'Incorrect username or password. Try again.' })
-      // }
-      // const token = await AuthService.generateToken(`${user._id}`)
-      // response.send({
-      //   token,
-      //   user: {
-      //     id: user._id,
-      //   },
-      // })
+      if (!passwordIsValid) {
+        return response
+          .status(422)
+          .json({ message: 'Incorrect username or password. Try again.' })
+      }
+
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+        },
+        `${process.env.SECRET_JWT}`,
+        {
+          expiresIn: 86400000,
+        },
+      )
+
+      return response.json({
+        user,
+        token,
+      })
     } catch (err) {
       response.status(500).send(err)
     }
@@ -77,18 +74,18 @@ class UserController {
     }
 
     try {
-      const userAlreadyRegistered = await userService.find({
+      const userAlreadyRegistered = (await userService.find({
         field: 'email',
         value: userData.email,
-      })
+      })) as unknown as IUser
 
-      if (userAlreadyRegistered.length > 0) {
+      if (userAlreadyRegistered.email === userData.email) {
         return response
           .status(422)
           .json({ message: 'E-mail already registered!' })
       }
     } catch (error) {
-      console.log(error)
+      response.status(422).json({ message: error })
     }
 
     try {
