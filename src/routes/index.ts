@@ -7,6 +7,6 @@ const routes = Router()
 
 routes.use('/api/status', statusRouter)
 routes.use('/api/products', productRouter)
-routes.use('/api/login', userRouter)
+routes.use('/api/users', userRouter)
 
 export { routes }

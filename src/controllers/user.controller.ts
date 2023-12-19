@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/user.service'
+import { UserValidation } from '../validations/user.validation'
+import * as Yup from 'yup'
 
 const userService = new UserService()
 
@@ -14,7 +16,7 @@ class UserController {
     }
 
     try {
-      const emailAlreadyExists = await userService.findOne({
+      const emailAlreadyExists = await userService.find({
         field: 'email',
         value: email,
       })
@@ -24,8 +26,11 @@ class UserController {
           .status(404)
           .json({ message: 'E-mail already registered! Try again.' })
       }
+
+      return response.json({ message: 'login' })
     } catch (error) {
       console.log(error)
+      response.status(500).send(error)
     }
 
     try {
@@ -50,6 +55,50 @@ class UserController {
       // })
     } catch (err) {
       response.status(500).send(err)
+    }
+  }
+
+  async signup(request: Request, response: Response) {
+    const userData = request.body
+
+    try {
+      await UserValidation.validate(userData, { abortEarly: false })
+    } catch (error) {
+      const yupError = error as Yup.ValidationError
+      const allErrors = {}
+
+      yupError.inner.forEach((error) => {
+        allErrors[error.path] = error.message
+      })
+
+      return response.status(404).send({
+        error: allErrors,
+      })
+    }
+
+    try {
+      const userAlreadyRegistered = await userService.find({
+        field: 'email',
+        value: userData.email,
+      })
+
+      if (userAlreadyRegistered.length > 0) {
+        return response
+          .status(422)
+          .json({ message: 'E-mail already registered!' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    try {
+      await userService.create(userData)
+
+      return response
+        .status(201)
+        .json({ message: 'successfully registered user' })
+    } catch (error) {
+      response.status(500).json({ message: error })
     }
   }
 }

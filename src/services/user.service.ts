@@ -1,5 +1,6 @@
 import UserModel from '../models/user.model'
 import { IProduct } from '../types/product'
+import { IUser } from '../types/user'
 
 interface IFindOne {
   field: string
@@ -7,16 +8,16 @@ interface IFindOne {
 }
 
 class UserService {
-  async create(productInfo: IProduct) {
-    return await UserModel.create(productInfo)
+  async create(userData: IUser) {
+    return await UserModel.create(userData)
   }
 
   async findAll(skip: number, limit: number) {
     return await UserModel.find().skip(skip).limit(limit)
   }
 
-  async findOne({ field, value }: IFindOne) {
-    return await UserModel.findById({ field, value })
+  async find({ field, value }: IFindOne) {
+    return await UserModel.find({ field, value })
   }
 
   async update(id: string, productUpdated: IProduct) {

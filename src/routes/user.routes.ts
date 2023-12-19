@@ -5,6 +5,7 @@ const userRouter = Router()
 
 const userController = new UserController()
 
-userRouter.post('/', userController.login)
+userRouter.post('/login', userController.login)
+userRouter.post('/signup', userController.signup)
 
 export { userRouter }
