@@ -46,6 +46,9 @@ class UserController {
         },
       )
 
+      user.password = undefined
+      user.role = 'user'
+
       return response.json({
         user,
         token,
@@ -73,19 +76,15 @@ class UserController {
       })
     }
 
-    try {
-      const userAlreadyRegistered = (await userService.find({
-        field: 'email',
-        value: userData.email,
-      })) as unknown as IUser
+    const userAlreadyRegistered = (await userService.find({
+      field: 'email',
+      value: userData.email,
+    })) as unknown as IUser
 
-      if (userAlreadyRegistered.email === userData.email) {
-        return response
-          .status(422)
-          .json({ message: 'E-mail already registered!' })
-      }
-    } catch (error) {
-      response.status(422).json({ message: error })
+    if (userAlreadyRegistered?.email === userData.email) {
+      return response
+        .status(422)
+        .json({ message: 'E-mail already registered!' })
     }
 
     try {
