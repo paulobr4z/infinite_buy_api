@@ -1,0 +1,87 @@
+openapi: 3.0.0
+
+info:
+  title: Infinite Buy API
+  description: Infinite Buy API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3333/api
+    description: Local environment server
+
+tags:
+  - name: Products
+
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: page
+          description: current page
+          schema:
+            type:  string
+        - in: query
+          name: perPage
+          description: number of products per page
+          schema:
+            type:  string
+      responses:
+        '200':
+          description: returns a list of all registered products
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            type: string
+                          price:
+                            type: integer
+                          images:
+                            type: array
+                            items:
+                              type: string
+                          amount:
+                            type: integer
+                          discount:
+                            type: integer
+                          category:
+                            type: array
+                            items:
+                              type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                    pagination:
+                      type: object
+                      properties:
+                        currentPage:
+                          type: integer
+                        previousPage:
+                          type: integer
+                        nextPage:
+                          type: integer
+                        perPage:
+                          type: integer
+                        totalPages:
+                          type: integer
+                        totalItems:
+                          type: integer
+  /products/:
+    post:
+      tags:
+        - Products
+      responses:
+        '201':
