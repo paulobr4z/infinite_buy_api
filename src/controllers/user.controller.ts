@@ -19,7 +19,10 @@ class UserController {
     }
 
     try {
-      const user = (await userService.find(email)) as unknown as IUser
+      const user = await userService.find({
+        field: 'email',
+        value: email,
+      })
 
       if (user.email !== email) {
         return response
