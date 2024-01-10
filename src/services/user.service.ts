@@ -17,7 +17,7 @@ class UserService {
   }
 
   async find({ field, value }: IFindOne) {
-    return await UserModel.findOne({ field, value })
+    return await UserModel.findOne({ [field]: value })
   }
 
   async update(id: string, productUpdated: IProduct) {
