@@ -13,7 +13,4 @@ export const UserValidation = Yup.object().shape({
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref('password'), null], 'different passwords')
     .required('required field'),
-  profileImage: Yup.string().required('required field'),
-  role: Yup.string().required('required field'),
-  status: Yup.string().required('required field'),
 })

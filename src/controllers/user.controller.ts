@@ -90,8 +90,17 @@ class UserController {
         .json({ message: 'E-mail already registered!' })
     }
 
+    const defaultUserData = {
+      ...userData,
+      profileImage: userData.profileImage ? userData.profileImage : '',
+      role: 'user',
+      status: 'active',
+    }
+
+    console.log(defaultUserData)
+
     try {
-      await userService.create(userData)
+      await userService.create(defaultUserData)
 
       return response
         .status(201)
