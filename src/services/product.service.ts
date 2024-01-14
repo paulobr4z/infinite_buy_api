@@ -6,8 +6,14 @@ class ProductService {
     return await ProductModel.create(productInfo)
   }
 
-  async findAll(skip: number, limit: number) {
-    return await ProductModel.find().skip(skip).limit(limit)
+  async findAll(skip: number, limit: number, category: string) {
+    const query = {}
+
+    if (category) {
+      Object.assign(query, { category })
+    }
+
+    return await ProductModel.find(query).skip(skip).limit(limit)
   }
 
   async findById(id: string) {

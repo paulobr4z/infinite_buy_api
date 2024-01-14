@@ -42,7 +42,7 @@ class ProductController {
 
   async findAll(request: Request, response: Response) {
     try {
-      let { page, perPage } = request.query as unknown as IQuery
+      let { page, perPage, category } = request.query as unknown as IQuery
 
       if (!perPage) perPage = 10
       if (!page) page = 1
@@ -54,7 +54,7 @@ class ProductController {
       const nextPage =
         Number(page) === Number(totalPages) ? null : Number(page) + 1
 
-      const products = await productService.findAll(skip, perPage)
+      const products = await productService.findAll(skip, perPage, category)
 
       return response.json({
         data: products,
@@ -63,8 +63,10 @@ class ProductController {
           previousPage,
           nextPage,
           perPage: +perPage,
-          totalPages,
-          totalItems,
+          totalPages: category
+            ? Math.ceil(products.length / perPage)
+            : Math.ceil(totalItems / perPage),
+          totalItems: category ? products.length : totalItems,
         },
       })
     } catch (error) {
