@@ -15,7 +15,7 @@ class UserController {
     if (email === '' || password === '') {
       return response
         .status(404)
-        .json({ message: 'Email or Password invalid. Try again.' })
+        .json({ message: 'E-mail ou senha invalido. Tente novamente.' })
     }
 
     try {
@@ -27,7 +27,7 @@ class UserController {
       if (user.email !== email) {
         return response
           .status(422)
-          .json({ message: 'Incorrect email or password. Try again.' })
+          .json({ message: 'E-mail ou senha invalido. Tente novamente.' })
       }
 
       const passwordIsValid = bcrypt.compareSync(password, user.password)
@@ -35,7 +35,7 @@ class UserController {
       if (!passwordIsValid) {
         return response
           .status(422)
-          .json({ message: 'Incorrect username or password. Try again.' })
+          .json({ message: 'E-mail ou senha invalido. Tente novamente.' })
       }
 
       const token = jwt.sign(
@@ -74,7 +74,7 @@ class UserController {
         allErrors[error.path] = error.message
       })
 
-      return response.status(404).send({
+      return response.status(409).send({
         error: allErrors,
       })
     }
@@ -85,9 +85,7 @@ class UserController {
     })) as unknown as IUser
 
     if (userAlreadyRegistered?.email === userData.email) {
-      return response
-        .status(422)
-        .json({ message: 'E-mail already registered!' })
+      return response.status(422).json({ message: 'E-mail já cadastrado.' })
     }
 
     const defaultUserData = {
@@ -104,7 +102,7 @@ class UserController {
 
       return response
         .status(201)
-        .json({ message: 'successfully registered user' })
+        .json({ message: 'Usuário cadastrado com sucesso.' })
     } catch (error) {
       response.status(500).json({ message: error })
     }

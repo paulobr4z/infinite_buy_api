@@ -25,7 +25,7 @@ class ProductController {
         })
 
         return response.status(404).send({
-          error: allErrors,
+          message: allErrors,
         })
       }
 
@@ -83,7 +83,7 @@ class ProductController {
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return response.status(404).send({
-          error: 'invalid id',
+          message: 'id inválido.',
         })
       }
 
@@ -91,7 +91,7 @@ class ProductController {
 
       if (!product) {
         return response.status(404).send({
-          error: 'product not found',
+          message: 'produto não encontrado.',
         })
       }
 
@@ -111,7 +111,7 @@ class ProductController {
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return response.status(404).send({
-          error: 'invalid id',
+          message: 'id inválido.',
         })
       }
 
@@ -119,7 +119,7 @@ class ProductController {
 
       if (!product) {
         return response.status(404).send({
-          error: 'product not found',
+          message: 'produto não encontrado',
         })
       }
 
@@ -138,7 +138,7 @@ class ProductController {
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return response.status(404).send({
-          error: 'invalid id',
+          message: 'id inválido.',
         })
       }
 
@@ -146,12 +146,12 @@ class ProductController {
 
       if (!product) {
         return response.status(404).send({
-          error: 'product not found',
+          message: 'produto não encontrado.',
         })
       }
 
       return response.status(202).json({
-        message: 'product deleted successfully',
+        message: 'produto deletado com sucesso.',
       })
     } catch (error) {
       return response.status(500).send({
@@ -168,13 +168,13 @@ class ProductController {
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return response.status(404).send({
-          error: 'invalid id',
+          message: 'id inválido',
         })
       }
 
       if (!image) {
         return response.status(404).send({
-          error: 'no images sent',
+          message: 'imagem não enviada.',
         })
       }
 
@@ -182,7 +182,7 @@ class ProductController {
 
       if (!product) {
         return response.status(404).send({
-          error: 'product not found',
+          message: 'produto não encontrado',
         })
       }
 
