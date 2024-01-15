@@ -24,6 +24,12 @@ class UserController {
         value: email,
       })
 
+      if (!user) {
+        return response
+          .status(422)
+          .json({ message: 'E-mail ou senha invalido. Tente novamente.' })
+      }
+
       if (user.email !== email) {
         return response
           .status(422)
@@ -94,8 +100,6 @@ class UserController {
       role: 'user',
       status: 'active',
     }
-
-    console.log(defaultUserData)
 
     try {
       await userService.create(defaultUserData)
