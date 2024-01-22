@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { ProductService } from '../services/product.service'
+import { ProductService } from '../../services/products/product.service'
 import mongoose from 'mongoose'
-import { ProductDataSchema } from '../validations/product.validation'
+import { ProductDataSchema } from '../../validations/product.validation'
 import * as Yup from 'yup'
-import { IQuery } from '../types/product'
-import { cloudinary } from '../storage/cloudinary'
+import { IQuery } from '../../types/product'
+import { cloudinary } from '../../storage/cloudinary'
 import { v4 as uuid } from 'uuid'
 
 const productService = new ProductService()
