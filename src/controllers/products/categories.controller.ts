@@ -28,6 +28,16 @@ class ProductCategoryController {
         })
       }
 
+      const categoryAlreadyExists = productCategoryService.findByName(
+        categoryInfo.name,
+      )
+
+      if ((await categoryAlreadyExists).length > 0) {
+        return response.status(404).send({
+          message: 'categoria já existe',
+        })
+      }
+
       await productCategoryService.create(categoryInfo)
 
       return response.status(201).json()

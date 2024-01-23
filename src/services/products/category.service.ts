@@ -6,6 +6,10 @@ class ProductCategoriesService {
     return await ProductCategoryModel.find()
   }
 
+  async findByName(name: string) {
+    return await ProductCategoryModel.find({ name })
+  }
+
   async create(productInfo: ICategory) {
     return await ProductCategoryModel.create(productInfo)
   }

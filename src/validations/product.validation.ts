@@ -13,6 +13,8 @@ export const ProductDataSchema = Yup.object().shape({
 export const ProductCategoryDataSchema = Yup.object().shape({
   name: Yup.string()
     .min(5, 'nome precisa ter pelo menos 5 caracteres')
+    .lowercase('nome precisa ter todas as letras minusculas')
+    .strict()
     .required('nome não informado'),
   description: Yup.string(),
 })
