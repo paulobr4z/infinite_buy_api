@@ -4,8 +4,17 @@ export const ProductDataSchema = Yup.object().shape({
   name: Yup.string().required('nome não informado'),
   description: Yup.string().required('descrição não informada'),
   price: Yup.number().required('preço não informado'),
-  images: Yup.array(),
-  amount: Yup.number(),
-  discount: Yup.number(),
-  category: Yup.array(),
+  images: Yup.array().typeError('campo precisa ser do tipo array'),
+  amount: Yup.number().typeError('campo precisa ser do tipo number'),
+  discount: Yup.number().typeError('campo precisa ser do tipo number'),
+  category: Yup.array().typeError('campo precisa ser do tipo array'),
+})
+
+export const ProductCategoryDataSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(5, 'nome precisa ter pelo menos 5 caracteres')
+    .lowercase('nome precisa ter todas as letras minusculas')
+    .strict()
+    .required('nome não informado'),
+  description: Yup.string(),
 })

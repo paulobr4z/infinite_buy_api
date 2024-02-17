@@ -16,3 +16,10 @@ export interface IQuery {
   perPage: number
   category: string
 }
+
+export interface ICategory {
+  id: string
+  name: string
+  description: string
+  created_at: Date
+}
