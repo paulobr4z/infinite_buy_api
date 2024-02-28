@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import bcrypt from 'bcrypt'
 import { IUser } from '../types/user'
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 const userService = new UserService()
 
@@ -101,6 +102,10 @@ class UserController {
       status: 'active',
     }
 
+    const hash = await bcrypt.hash(userData.password, 10)
+
+    userData.password = hash
+
     try {
       await userService.create(defaultUserData)
 
@@ -109,6 +114,55 @@ class UserController {
         .json({ message: 'Usuário cadastrado com sucesso.' })
     } catch (error) {
       response.status(500).json({ message: error })
+    }
+  }
+
+  async update(request: Request, response: Response) {
+    try {
+      const { id } = request.params
+      const userData = request.body
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(404).send({
+          message: 'id inválido.',
+        })
+      }
+
+      try {
+        await UserValidation.validate(userData, { abortEarly: false })
+      } catch (error) {
+        const yupError = error as Yup.ValidationError
+        const allErrors = {}
+
+        yupError.inner.forEach((error) => {
+          allErrors[error.path] = error.message
+        })
+
+        return response.status(409).send({
+          error: allErrors,
+        })
+      }
+
+      const hash = await bcrypt.hash(userData.password, 10)
+
+      userData.password = hash
+
+      const user = await userService.update(id, userData)
+
+      if (!user) {
+        return response.status(404).send({
+          message: 'usuário não encontrado',
+        })
+      }
+
+      user.password = undefined
+
+      return response.json(user)
+    } catch (error) {
+      return response.status(500).send({
+        error: 'Internal Server Error!',
+        message: error,
+      })
     }
   }
 }
