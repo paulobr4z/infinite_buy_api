@@ -24,17 +24,31 @@ paths:
           name: page
           description: pagina atual
           schema:
-            type:  string
+            type: string
         - in: query
           name: perPage
           description: numero de produtos por pagina
           schema:
-            type:  string
+            type: string
         - in: query
           name: category
           description: pesquisa produtos por categoria
           schema:
-            type:  string
+            type: array
+            items:
+              type: string
+        - in: query
+          name: sortByName
+          description: pesquisa produtos por nome em ordem ascendente ou decrescente
+          schema:
+            type: string
+            example: asc | desc
+        - in: query
+          name: sortByPrice
+          description: pesquisa produtos por preço em ordem ascendente ou decrescente
+          schema:
+            type: string
+            example: asc | desc
       responses:
         '200':
           description: returns a list of all registered products
