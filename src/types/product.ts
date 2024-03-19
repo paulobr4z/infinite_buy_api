@@ -14,7 +14,9 @@ export interface IProduct {
 export interface IQuery {
   page: number
   perPage: number
-  category: string
+  category: string[]
+  sortByName: string
+  sortByPrice: string
 }
 
 export interface ICategory {

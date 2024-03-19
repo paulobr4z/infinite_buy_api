@@ -1,19 +1,46 @@
 import ProductModel from '../../models/products/product.model'
 import { IProduct } from '../../types/product'
 
+interface IQuery {
+  category?: {
+    $in: string[]
+  }
+}
+
+interface IFindAllService {
+  category: string[]
+  sortByName: string
+  sortByPrice: string
+}
+
 class ProductService {
   async create(productInfo: IProduct) {
     return await ProductModel.create(productInfo)
   }
 
-  async findAll(skip: number, limit: number, category: string) {
-    const query = {}
+  async findAll({ category, sortByName, sortByPrice }: IFindAllService) {
+    const query: IQuery = {}
+    const sort = {}
 
     if (category) {
-      Object.assign(query, { category })
+      query.category = {
+        $in: category,
+      }
     }
 
-    return await ProductModel.find(query).skip(skip).limit(limit)
+    if (sortByName) {
+      Object.assign(sort, { name: sortByName })
+    }
+
+    if (sortByPrice) {
+      Object.assign(sort, { price: sortByPrice })
+    }
+
+    return await ProductModel.find(query)
+      .collation({ locale: 'en' })
+      // .skip(skip)
+      // .limit(limit)
+      .sort(sort)
   }
 
   async findById(id: string) {
