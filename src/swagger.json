@@ -1,533 +1,554 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Infinite Buy API",
-        "description": "Infinite Buy API",
-        "version": "1.0.0"
-    },
-    "servers": [
-        {
-            "url": "http://localhost:3333/api",
-            "description": "Local environment server"
-        }
-    ],
-    "tags": [
-        {
-            "name": "Products"
-        },
-        {
-            "name": "Users"
-        }
-    ],
-    "paths": {
-        "/products": {
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Get Products",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "page",
-                        "description": "pagina atual",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "perPage",
-                        "description": "numero de produtos por pagina",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "category",
-                        "description": "pesquisa produtos por categoria",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "returns a list of all registered products",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "_id": {
-                                                        "type": "string"
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    },
-                                                    "description": {
-                                                        "type": "string"
-                                                    },
-                                                    "price": {
-                                                        "type": "integer"
-                                                    },
-                                                    "images": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "amount": {
-                                                        "type": "integer"
-                                                    },
-                                                    "discount": {
-                                                        "type": "integer"
-                                                    },
-                                                    "category": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "format": "date-time"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "pagination": {
-                                            "type": "object",
-                                            "properties": {
-                                                "currentPage": {
-                                                    "type": "integer"
-                                                },
-                                                "previousPage": {
-                                                    "type": "integer"
-                                                },
-                                                "nextPage": {
-                                                    "type": "integer"
-                                                },
-                                                "perPage": {
-                                                    "type": "integer"
-                                                },
-                                                "totalPages": {
-                                                    "type": "integer"
-                                                },
-                                                "totalItems": {
-                                                    "type": "integer"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Create Product",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "price": {
-                                        "type": "integer"
-                                    },
-                                    "images": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "amount": {
-                                        "type": "integer"
-                                    },
-                                    "discount": {
-                                        "type": "integer"
-                                    },
-                                    "category": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "No body returned for response."
-                    }
-                }
-            }
-        },
-        "/products/{product_id}": {
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Get Product",
-                "parameters": [
-                    {
-                        "name": "product_id",
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "description": {
-                                            "type": "string"
-                                        },
-                                        "price": {
-                                            "type": "integer"
-                                        },
-                                        "images": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "amount": {
-                                            "type": "integer"
-                                        },
-                                        "discount": {
-                                            "type": "integer"
-                                        },
-                                        "category": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Update Product",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "price": {
-                                        "type": "integer"
-                                    },
-                                    "images": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "amount": {
-                                        "type": "integer"
-                                    },
-                                    "discount": {
-                                        "type": "integer"
-                                    },
-                                    "category": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "No body returned for response."
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Delete Product",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "price": {
-                                        "type": "integer"
-                                    },
-                                    "images": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "amount": {
-                                        "type": "integer"
-                                    },
-                                    "discount": {
-                                        "type": "integer"
-                                    },
-                                    "category": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "No body returned for response."
-                    }
-                }
-            }
-        },
-        "/products/image/{product_id}": {
-            "patch": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Update Product Image",
-                "requestBody": {
-                    "content": {
-                        "image/png": {
-                            "schema": {
-                                "type": "string",
-                                "format": "binary"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "description": {
-                                            "type": "string"
-                                        },
-                                        "price": {
-                                            "type": "integer"
-                                        },
-                                        "images": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "amount": {
-                                            "type": "integer"
-                                        },
-                                        "discount": {
-                                            "type": "integer"
-                                        },
-                                        "category": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/signup": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Create User",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    },
-                                    "passwordConfirmation": {
-                                        "type": "string"
-                                    },
-                                    "profileImage": {
-                                        "type": "string"
-                                    },
-                                    "role": {
-                                        "type": "string"
-                                    },
-                                    "status": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "successfully registered user"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/login": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Login",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "user": {
-                                            "type": "object",
-                                            "properties": {
-                                                "_id": {
-                                                    "type": "string"
-                                                },
-                                                "name": {
-                                                    "type": "string"
-                                                },
-                                                "email": {
-                                                    "type": "string"
-                                                },
-                                                "profileImage": {
-                                                    "type": "string"
-                                                },
-                                                "role": {
-                                                    "type": "string"
-                                                },
-                                                "status": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        },
-                                        "token": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+  "openapi": "3.0.0",
+  "info": {
+      "title": "Infinite Buy API",
+      "description": "Infinite Buy API",
+      "version": "1.0.0"
+  },
+  "servers": [
+      {
+          "url": "http://localhost:3333/api",
+          "description": "Local environment server"
+      }
+  ],
+  "tags": [
+      {
+          "name": "Products"
+      },
+      {
+          "name": "Users"
+      }
+  ],
+  "paths": {
+      "/products": {
+          "get": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Get Products",
+              "parameters": [
+                  {
+                      "in": "query",
+                      "name": "page",
+                      "description": "pagina atual",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "in": "query",
+                      "name": "perPage",
+                      "description": "numero de produtos por pagina",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "in": "query",
+                      "name": "category",
+                      "description": "pesquisa produtos por categoria",
+                      "schema": {
+                          "type": "array",
+                          "items": {
+                              "type": "string"
+                          }
+                      }
+                  },
+                  {
+                      "in": "query",
+                      "name": "sortByName",
+                      "description": "pesquisa produtos por nome em ordem ascendente ou decrescente",
+                      "schema": {
+                          "type": "string",
+                          "example": "asc | desc"
+                      }
+                  },
+                  {
+                      "in": "query",
+                      "name": "sortByPrice",
+                      "description": "pesquisa produtos por preço em ordem ascendente ou decrescente",
+                      "schema": {
+                          "type": "string",
+                          "example": "asc | desc"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "returns a list of all registered products",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "data": {
+                                          "type": "array",
+                                          "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                  "_id": {
+                                                      "type": "string"
+                                                  },
+                                                  "name": {
+                                                      "type": "string"
+                                                  },
+                                                  "description": {
+                                                      "type": "string"
+                                                  },
+                                                  "price": {
+                                                      "type": "integer"
+                                                  },
+                                                  "images": {
+                                                      "type": "array",
+                                                      "items": {
+                                                          "type": "string"
+                                                      }
+                                                  },
+                                                  "amount": {
+                                                      "type": "integer"
+                                                  },
+                                                  "discount": {
+                                                      "type": "integer"
+                                                  },
+                                                  "category": {
+                                                      "type": "array",
+                                                      "items": {
+                                                          "type": "string"
+                                                      }
+                                                  },
+                                                  "created_at": {
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                  }
+                                              }
+                                          }
+                                      },
+                                      "pagination": {
+                                          "type": "object",
+                                          "properties": {
+                                              "currentPage": {
+                                                  "type": "integer"
+                                              },
+                                              "previousPage": {
+                                                  "type": "integer"
+                                              },
+                                              "nextPage": {
+                                                  "type": "integer"
+                                              },
+                                              "perPage": {
+                                                  "type": "integer"
+                                              },
+                                              "totalPages": {
+                                                  "type": "integer"
+                                              },
+                                              "totalItems": {
+                                                  "type": "integer"
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Create Product",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "name": {
+                                      "type": "string"
+                                  },
+                                  "description": {
+                                      "type": "string"
+                                  },
+                                  "price": {
+                                      "type": "integer"
+                                  },
+                                  "images": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "amount": {
+                                      "type": "integer"
+                                  },
+                                  "discount": {
+                                      "type": "integer"
+                                  },
+                                  "category": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "No body returned for response."
+                  }
+              }
+          }
+      },
+      "/products/{product_id}": {
+          "get": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Get Product",
+              "parameters": [
+                  {
+                      "name": "product_id",
+                      "in": "path",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "name": {
+                                          "type": "string"
+                                      },
+                                      "description": {
+                                          "type": "string"
+                                      },
+                                      "price": {
+                                          "type": "integer"
+                                      },
+                                      "images": {
+                                          "type": "array",
+                                          "items": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "amount": {
+                                          "type": "integer"
+                                      },
+                                      "discount": {
+                                          "type": "integer"
+                                      },
+                                      "category": {
+                                          "type": "array",
+                                          "items": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "created_at": {
+                                          "type": "string",
+                                          "format": "date-time"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          "patch": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Update Product",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "name": {
+                                      "type": "string"
+                                  },
+                                  "description": {
+                                      "type": "string"
+                                  },
+                                  "price": {
+                                      "type": "integer"
+                                  },
+                                  "images": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "amount": {
+                                      "type": "integer"
+                                  },
+                                  "discount": {
+                                      "type": "integer"
+                                  },
+                                  "category": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "No body returned for response."
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Delete Product",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "name": {
+                                      "type": "string"
+                                  },
+                                  "description": {
+                                      "type": "string"
+                                  },
+                                  "price": {
+                                      "type": "integer"
+                                  },
+                                  "images": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "amount": {
+                                      "type": "integer"
+                                  },
+                                  "discount": {
+                                      "type": "integer"
+                                  },
+                                  "category": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "No body returned for response."
+                  }
+              }
+          }
+      },
+      "/products/image/{product_id}": {
+          "patch": {
+              "tags": [
+                  "Products"
+              ],
+              "summary": "Update Product Image",
+              "requestBody": {
+                  "content": {
+                      "image/png": {
+                          "schema": {
+                              "type": "string",
+                              "format": "binary"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "name": {
+                                          "type": "string"
+                                      },
+                                      "description": {
+                                          "type": "string"
+                                      },
+                                      "price": {
+                                          "type": "integer"
+                                      },
+                                      "images": {
+                                          "type": "array",
+                                          "items": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "amount": {
+                                          "type": "integer"
+                                      },
+                                      "discount": {
+                                          "type": "integer"
+                                      },
+                                      "category": {
+                                          "type": "array",
+                                          "items": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "created_at": {
+                                          "type": "string",
+                                          "format": "date-time"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/users/signup": {
+          "post": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Create User",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "name": {
+                                      "type": "string"
+                                  },
+                                  "email": {
+                                      "type": "string"
+                                  },
+                                  "password": {
+                                      "type": "string"
+                                  },
+                                  "passwordConfirmation": {
+                                      "type": "string"
+                                  },
+                                  "profileImage": {
+                                      "type": "string"
+                                  },
+                                  "role": {
+                                      "type": "string"
+                                  },
+                                  "status": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "message": {
+                                          "type": "string",
+                                          "example": "successfully registered user"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/users/login": {
+          "post": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Login",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "email": {
+                                      "type": "string"
+                                  },
+                                  "password": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "user": {
+                                          "type": "object",
+                                          "properties": {
+                                              "_id": {
+                                                  "type": "string"
+                                              },
+                                              "name": {
+                                                  "type": "string"
+                                              },
+                                              "email": {
+                                                  "type": "string"
+                                              },
+                                              "profileImage": {
+                                                  "type": "string"
+                                              },
+                                              "role": {
+                                                  "type": "string"
+                                              },
+                                              "status": {
+                                                  "type": "string"
+                                              }
+                                          }
+                                      },
+                                      "token": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
 }
